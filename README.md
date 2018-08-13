@@ -18,6 +18,7 @@
 * Qt toolkit 5.11.1 .
 
 # ToDo
+* Remove the file name from the first line of treewidget.
 * Fix the show dobule window .
 * Fix the prograss Dialog.
 * Replace the "filename" variable to QStringList to QString. 
