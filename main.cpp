@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     QStringList files = a.arguments();
-    files.takeFirst()				// Remove the first arg -> Its the filename.
+    files.takeFirst();				// Remove the first arg -> Its the filename.
 
     coreinfo *w = new coreinfo( files );
     w->show();
