@@ -21,12 +21,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-	QStringList files;
-    files << "/home/cosmos/Multimedia/Music/Classics/Ek.Pyar.Ka.Nagma.Hai-Lata.Mangeshkar.mp3";
-    files << "/home/cosmos/Multimedia/Music/Classics/AAA.My.Name.Is.mp3";
-    files << "/home/cosmos/Multimedia/Music/Classics/Ek.Main.Aur.Ek.Tu.mp3";
-    files << "/home/cosmos/Multimedia/Music/Classics/Naam.Gum.Jayega.mp3";
-    files << "/home/cosmos/Multimedia/Music/Classics/Yeh.Dil.Na.Hota.Bechara.ogg";
+    QStringList files = a.arguments();
+    files.takeFirst()				// Remove the first arg -> Its the filename.
 
     coreinfo *w = new coreinfo( files );
     w->show();
