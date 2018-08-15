@@ -20,8 +20,12 @@ along with this program; if not, see {http://www.gnu.org/licenses/}. */
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    coreinfo w;
-    w.show();
+
+    QStringList files = a.arguments();
+    files.takeFirst();				// Remove the first arg -> Its the filename.
+
+    coreinfo *w = new coreinfo( files );
+    w->show();
 
     return a.exec();
 }

@@ -27,13 +27,11 @@ along with this program; if not, see {http://www.gnu.org/licenses/}. */
 #include <QVBoxLayout>
 
 
-coreinfo::coreinfo(QWidget *parent): QWidget(parent)
+coreinfo::coreinfo( QStringList fileNames, QWidget *parent): QTreeWidget(parent)
 {
-    C = new Core();
 
-    QStringList left;
-    left <<"/home/shaber/Pictures/Opera Snapshot_2018-07-14_095039_startpage.png";
-    openFiles(left);
+    C = new Core();
+    openFiles( fileNames );
 
 //    QVBoxLayout * mainLayout = new QVBoxLayout();
 //    viewWidget = new QWidget();
@@ -107,9 +105,7 @@ void coreinfo::refreshDisplay()
 {
 
     C->Menu_View_Tree();
-    viewWidget = showTreeView(true);
-
-    viewWidget->show();
+    loadTreeView(true);
 
     // Show info in QTextBrowser
 //    QFont font("Mono");
@@ -172,21 +168,19 @@ QString coreinfo::shortName(QDir d, QString name)
 }
 
 
-QTreeWidget* coreinfo::showTreeView(bool completeDisplay)
+void coreinfo::loadTreeView(bool completeDisplay)
 {
-    QTreeWidget* treeWidget = new QTreeWidget();
-    //treeWidget->setHeaderHidden(true);
-    treeWidget->setColumnCount(2);
+    setColumnCount(2);
     QStringList headers = QStringList("key");
     headers.append("value");
-    treeWidget->setHeaderLabels(headers);
+    setHeaderLabels(headers);
     unsigned fileCount = (unsigned)C->Count_Get();
 
     QDir dir = getCommonDir(C);
     for (size_t filePos=0; filePos<fileCount; filePos++) {
         //Pour chaque fichier
-        QTreeWidgetItem* treeItem = new QTreeWidgetItem(treeWidget,QStringList(shortName(dir,wstring2QString(C->Get(filePos, Stream_General, 0, __T("CompleteName"))))));
-        treeWidget->addTopLevelItem(treeItem);
+        QTreeWidgetItem* treeItem = new QTreeWidgetItem(this,QStringList(shortName(dir,wstring2QString(C->Get(filePos, Stream_General, 0, __T("CompleteName"))))));
+        addTopLevelItem(treeItem);
 
         for (int streamKind=(int)Stream_General; streamKind<(int)Stream_Max; streamKind++)
         {
@@ -239,7 +233,6 @@ QTreeWidget* coreinfo::showTreeView(bool completeDisplay)
         }
     }
     if(C->Count_Get()<=1)
-        treeWidget->expandAll();
-    treeWidget->resizeColumnToContents(0);
-    return treeWidget;
+        expandAll();
+    resizeColumnToContents(0);
 }
