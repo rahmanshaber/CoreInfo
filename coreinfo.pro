@@ -81,3 +81,8 @@ DEFINES += _UNICODE
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+MOC_DIR 	= build/moc
+OBJECTS_DIR = build/objs
+RCC_DIR		= build/qrc
+UI_DIR      = build/uic

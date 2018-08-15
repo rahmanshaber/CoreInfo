@@ -34,24 +34,23 @@ using namespace ZenLib;
 #define QString2wstring(_DATA) \
     Ztring().From_UTF8(_DATA.toUtf8())
 
-class coreinfo : public QWidget
+class coreinfo : public QTreeWidget
 {
     Q_OBJECT
 
 public:
-    coreinfo(QWidget *parent = 0);
+    coreinfo( QStringList fileNames, QWidget *parent = 0);
     ~coreinfo();
     QDir getCommonDir(Core *C);
     void refreshDisplay();
     void openFiles(QStringList fileNames);
-    void updateProgressBar();
+    Q_SLOT void updateProgressBar();
 
 private:
     QTimer* timer;
     QProgressDialog* progressDialog;
     Core* C;
-    QWidget* viewWidget;
-    QTreeWidget *showTreeView(bool completeDisplay);
+    void loadTreeView(bool completeDisplay);
     QString shortName(QDir d, QString name);
     void openTimerInit();
 };

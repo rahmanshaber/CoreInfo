@@ -20,8 +20,16 @@ along with this program; if not, see {http://www.gnu.org/licenses/}. */
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    coreinfo w;
-    w.show();
+
+	QStringList files;
+    files << "/home/cosmos/Multimedia/Music/Classics/Ek.Pyar.Ka.Nagma.Hai-Lata.Mangeshkar.mp3";
+    files << "/home/cosmos/Multimedia/Music/Classics/AAA.My.Name.Is.mp3";
+    files << "/home/cosmos/Multimedia/Music/Classics/Ek.Main.Aur.Ek.Tu.mp3";
+    files << "/home/cosmos/Multimedia/Music/Classics/Naam.Gum.Jayega.mp3";
+    files << "/home/cosmos/Multimedia/Music/Classics/Yeh.Dil.Na.Hota.Bechara.ogg";
+
+    coreinfo *w = new coreinfo( files );
+    w->show();
 
     return a.exec();
 }
