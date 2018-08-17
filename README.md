@@ -5,6 +5,7 @@
 
 ### Changes in latest release
 * First release.
+* Version 1.1
 
 
 ### Dependencies:
@@ -14,19 +15,13 @@
 * zlib
 
 ## Tested In
+* Linux.
 * Manjaro xfce (Arch).
 * Qt toolkit 5.11.1 .
 
-# ToDo
-* Remove the file name from the first line of treewidget.
-* Fix the show dobule window .
-* Fix the prograss Dialog.
-* Replace the "filename" variable to QStringList to QString. 
-* Make it a widget.
-* remove the unused functions and improve the existing function.
+### ToDo
 
 ### Known Bugs
-* Shows a dialog.
 
 ### Feedback
 * We need your feedback to improve the CoreInfo.Send us your feedback through email or github [issues](https://github.com/rahmanshaber/coreinfo/issues "Title") .

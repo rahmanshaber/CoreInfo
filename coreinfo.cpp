@@ -15,101 +15,49 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, see {http://www.gnu.org/licenses/}. */
 
 #include "coreinfo.h"
-
-#include "configtreetext.h"
-
-#include <QDir>
-#include <QMimeData>
-#include <QTextBrowser>
-#include <QTreeWidget>
-#include <QTimer>
-#include <QProgressDialog>
-#include <QVBoxLayout>
+#include "ui_coreinfo.h"
 
 
-coreinfo::coreinfo(QWidget *parent): QWidget(parent)
+coreinfo::coreinfo(QWidget *parent) :QWidget(parent),ui(new Ui::coreinfo)
 {
+    ui->setupUi(this);
     C = new Core();
 
-    QStringList left;
-    left <<"/home/shaber/Pictures/Opera Snapshot_2018-07-14_095039_startpage.png";
-    openFiles(left);
-
-//    QVBoxLayout * mainLayout = new QVBoxLayout();
-//    viewWidget = new QWidget();
-//    setWindowTitle("CoreInfo");
-//    mainLayout->setContentsMargins(0,0,0,0);
-//    mainLayout->addWidget(viewWidget);
-//    setLayout(mainLayout);
-//    this->show();
+    // For testing
+    openFiles(QStringList() <<"File Path" );
 }
 
 coreinfo::~coreinfo()
 {
-
+    delete ui;
 }
 
 void coreinfo::openFiles(QStringList fileNames)
 {
     //Configuring
-    if(fileNames.isEmpty())
+    if (fileNames.isEmpty())
         return;
-    for(int i=0;i<fileNames.size();i++) {
+    for (int i = 0; i < fileNames.size(); i++) {
         fileNames[i] = QDir::toNativeSeparators(fileNames[i]);
     }
-    C->Menu_File_Open_Files_Begin(true, false);
-    for (int Pos=0; Pos<fileNames.size(); Pos++){
-        C->Menu_File_Open_Files_Continue(QString2wstring(fileNames[Pos]));
 
-    }
+    // For opening multiple files
+//    C->Menu_File_Open_Files_Begin(true, false);
+//    for (int Pos=0; Pos<fileNames.size(); Pos++){
+//        C->Menu_File_Open_Files_Continue(QString2wstring(fileNames[Pos]));
+//    }
 
-    openTimerInit();
+    // For opening single file
+    C->Menu_File_Open_File( QString2wstring( fileNames[ 0 ] ) );
 
     refreshDisplay();
 }
 
-void coreinfo::openTimerInit ()
-{
-    progressDialog=new QProgressDialog("Opening files...","Abort Opening", 0, 10000, this);
-    progressDialog->setWindowModality(Qt::WindowModal);
-    progressDialog->setMinimumDuration(0);
-    progressDialog->setWindowTitle("MediaInfo");
-
-    if (timer==nullptr)
-    {
-        timer=new QTimer();
-        connect(timer, SIGNAL(timeout()), this, SLOT(updateProgressBar()));
-        timer->start(100);
-    }
-}
-
-void coreinfo::updateProgressBar ()
-{
-    if (progressDialog==nullptr)
-        return;
-
-    progressDialog->setValue((int)C->State_Get());
-
-    if (C->State_Get()==10000 || progressDialog->wasCanceled())
-    {
-        progressDialog->hide();
-        timer->stop();
-
-        delete progressDialog; progressDialog=nullptr;
-        delete timer; timer=nullptr;
-
-        //Showing
-        refreshDisplay();
-    }
-}
-
 void coreinfo::refreshDisplay()
 {
-
+    // Show info in QTreeWidget
     C->Menu_View_Tree();
-    viewWidget = showTreeView(true);
-
-    viewWidget->show();
+    ui->mainLayout->addWidget(showTreeView(true));
 
     // Show info in QTextBrowser
 //    QFont font("Mono");
@@ -136,15 +84,14 @@ void coreinfo::refreshDisplay()
 //                }
 //            }
 //        }
-//    }
-
+//        }
 }
 
-QDir coreinfo::getCommonDir(Core*C)
+QDir coreinfo::getCommonDir(Core *C) // Get the common directory among all files
 {
     QList<QStringList> list;
     QStringList dirName;
-    unsigned fileCount = (unsigned)C->Count_Get();
+    unsigned fileCount = static_cast<unsigned>(C->Count_Get());
     if(fileCount==0)
         return QDir::home();
     for(unsigned filePos=0;filePos<fileCount;filePos++)
@@ -165,14 +112,7 @@ QDir coreinfo::getCommonDir(Core*C)
     return dir;
 }
 
-QString coreinfo::shortName(QDir d, QString name)
-{
-    //Elminating unuseful info from filenames
-    return d.relativeFilePath(name);
-}
-
-
-QTreeWidget* coreinfo::showTreeView(bool completeDisplay)
+QTreeWidget *coreinfo::showTreeView(bool completeDisplay)
 {
     QTreeWidget* treeWidget = new QTreeWidget();
     //treeWidget->setHeaderHidden(true);
@@ -180,43 +120,52 @@ QTreeWidget* coreinfo::showTreeView(bool completeDisplay)
     QStringList headers = QStringList("key");
     headers.append("value");
     treeWidget->setHeaderLabels(headers);
-    unsigned fileCount = (unsigned)C->Count_Get();
+    unsigned fileCount = static_cast<unsigned>(C->Count_Get());
 
-    QDir dir = getCommonDir(C);
+    //QDir dir = getCommonDir(C);
+
     for (size_t filePos=0; filePos<fileCount; filePos++) {
-        //Pour chaque fichier
-        QTreeWidgetItem* treeItem = new QTreeWidgetItem(treeWidget,QStringList(shortName(dir,wstring2QString(C->Get(filePos, Stream_General, 0, __T("CompleteName"))))));
-        treeWidget->addTopLevelItem(treeItem);
 
-        for (int streamKind=(int)Stream_General; streamKind<(int)Stream_Max; streamKind++)
+        // For each file
+        //QTreeWidgetItem* treeItem = new QTreeWidgetItem(treeWidget,QStringList(shortName(dir,wstring2QString(C->Get(filePos, Stream_General, 0, __T("CompleteName"))))));
+        //treeWidget->addTopLevelItem(treeItem);
+
+        for (int streamKind=static_cast<int>(Stream_General); streamKind< static_cast<int>(Stream_Max); streamKind++)
         {
-            //Pour chaque type de flux
-            QString StreamKindText=wstring2QString(C->Get(filePos, (stream_t)streamKind, 0, __T("StreamKind/String"), Info_Text));
-            size_t StreamsCount=C->Count_Get(filePos, (stream_t)streamKind);
+            // For each type of flow
+            QString StreamKindText=wstring2QString(C->Get(filePos, static_cast<stream_t>(streamKind), 0, __T("StreamKind/String"), Info_Text));
+            size_t StreamsCount=C->Count_Get(filePos,static_cast<stream_t>(streamKind));
             for (size_t streamPos=Stream_General; streamPos<StreamsCount; streamPos++)
             {
-                //Pour chaque stream
+                // For each stream
                 QString A=StreamKindText;
-                QString B=wstring2QString(C->Get(filePos, (stream_t)streamKind, streamPos, __T("StreamKindPos"), Info_Text));
+                QString B=wstring2QString(C->Get(filePos,static_cast<stream_t>(streamKind), streamPos, __T("StreamKindPos"), Info_Text));
                 if (!B.isEmpty())
                 {
                     A+=" #"+B;
                 }
-                QTreeWidgetItem* node = new QTreeWidgetItem(treeItem,QStringList(A));
-                treeItem->addChild(node);
+
+                // For each file
+                //QTreeWidgetItem* node = new QTreeWidgetItem(treeItem,QStringList(A));
+                //treeItem->addChild(node);
+
+                // For one file
+                QTreeWidgetItem* node = new QTreeWidgetItem(treeWidget,QStringList(A));
+                treeWidget->addTopLevelItem(node);
 
                 if(ConfigTreeText::getIndex()==0) {
-                    size_t ChampsCount=C->Count_Get(filePos, (stream_t)streamKind, streamPos);
+                    size_t ChampsCount=C->Count_Get(filePos, static_cast<stream_t>(streamKind), streamPos);
                     for (size_t Champ_Pos=0; Champ_Pos<ChampsCount; Champ_Pos++)
                     {
-                        if ((completeDisplay || C->Get(filePos, (stream_t)streamKind, streamPos, Champ_Pos, Info_Options)[InfoOption_ShowInInform]==__T('Y')) && C->Get(filePos, (stream_t)streamKind, streamPos, Champ_Pos, Info_Text)!=__T(""))
+                        if ((completeDisplay || C->Get(filePos, static_cast<stream_t>(streamKind), streamPos, Champ_Pos, Info_Options)[InfoOption_ShowInInform]
+                             ==__T('Y')) && C->Get(filePos,static_cast<stream_t>(streamKind), streamPos, Champ_Pos, Info_Text)!=__T(""))
                         {
-                            QString A=wstring2QString(C->Get(filePos, (stream_t)streamKind, streamPos, Champ_Pos, Info_Text));
-                            A+=wstring2QString(C->Get(filePos, (stream_t)streamKind, streamPos, Champ_Pos, Info_Measure_Text));
+                            QString A=wstring2QString(C->Get(filePos,static_cast<stream_t>(streamKind), streamPos, Champ_Pos, Info_Text));
+                            A+=wstring2QString(C->Get(filePos,static_cast<stream_t>(streamKind), streamPos, Champ_Pos, Info_Measure_Text));
 
-                            QString D=wstring2QString(C->Get(filePos, (stream_t)streamKind, streamPos, Champ_Pos, Info_Name_Text));
+                            QString D=wstring2QString(C->Get(filePos,static_cast<stream_t>(streamKind), streamPos, Champ_Pos, Info_Name_Text));
                             if (D.isEmpty())
-                                D=wstring2QString(C->Get(filePos, (stream_t)streamKind, streamPos, Champ_Pos, Info_Name)); //Texte n'existe pas
+                                D=wstring2QString(C->Get(filePos, static_cast<stream_t>(streamKind), streamPos, Champ_Pos, Info_Name)); //Texte n'existe pas
 
                             QStringList sl = QStringList(D);
                             sl.append(A);
@@ -225,11 +174,11 @@ QTreeWidget* coreinfo::showTreeView(bool completeDisplay)
                     }
                 } else {
                     foreach(QString field, ConfigTreeText::getConfigTreeText()->getFields(streamKind)) {
-                        QString A=wstring2QString(C->Get(filePos, (stream_t)streamKind, streamPos, QString2wstring(field), Info_Text));
-                        A+=wstring2QString(C->Get(filePos, (stream_t)streamKind, streamPos, QString2wstring(field), Info_Measure_Text));
-                        QString B=wstring2QString(C->Get(filePos, (stream_t)streamKind, streamPos, QString2wstring(field), Info_Name_Text));
+                        QString A=wstring2QString(C->Get(filePos,static_cast<stream_t>(streamKind), streamPos, QString2wstring(field), Info_Text));
+                        A+=wstring2QString(C->Get(filePos,static_cast<stream_t>(streamKind), streamPos, QString2wstring(field), Info_Measure_Text));
+                        QString B=wstring2QString(C->Get(filePos,static_cast<stream_t>(streamKind), streamPos, QString2wstring(field), Info_Name_Text));
                         if (B.isEmpty())
-                            B=wstring2QString(C->Get(filePos, (stream_t)streamKind, streamPos, QString2wstring(field), Info_Name));
+                            B=wstring2QString(C->Get(filePos,static_cast<stream_t>(streamKind), streamPos, QString2wstring(field), Info_Name));
                         QStringList sl = QStringList(B);
                         sl.append(A);
                         node->addChild(new QTreeWidgetItem(node,sl));
@@ -242,4 +191,10 @@ QTreeWidget* coreinfo::showTreeView(bool completeDisplay)
         treeWidget->expandAll();
     treeWidget->resizeColumnToContents(0);
     return treeWidget;
+}
+
+QString coreinfo::shortName(QDir d, QString name)
+{
+    //Elminating unuseful info from filenames
+    return d.relativeFilePath(name);
 }

@@ -43,7 +43,7 @@ Core::~Core()
 void Core::Data_Prepare()
 {
     //Inform
-    Text=MI->Inform((size_t)-1);
+    Text=MI->Inform(static_cast<size_t>(-1));
 }
 
 size_t Core::Menu_File_Open_File (const String& FileName)
@@ -365,7 +365,7 @@ void Core::Menu_Language (const String& Language)
 String& Core::Inform_Get ()
 {
     if (Text_Temp.empty())
-        Text=MI->Inform((size_t)-1);
+        Text=MI->Inform(static_cast<size_t>(-1));
     else
         Text=Text_Temp;
     return Text;

@@ -22,38 +22,41 @@ along with this program; if not, see {http://www.gnu.org/licenses/}. */
 #include <QMimeData>
 #include <QTextBrowser>
 #include <QTreeWidget>
-#include <QProgressDialog>
 
 #include "Core.h"
+#include "configtreetext.h"
 
 #include <ZenLib/Ztring.h>
 #include <ZenLib/ZtringListList.h>
+
 using namespace ZenLib;
+
 #define wstring2QString(_DATA) \
     QString::fromUtf8(Ztring(_DATA).To_UTF8().c_str())
 #define QString2wstring(_DATA) \
     Ztring().From_UTF8(_DATA.toUtf8())
+
+namespace Ui {
+class coreinfo;
+}
 
 class coreinfo : public QWidget
 {
     Q_OBJECT
 
 public:
-    coreinfo(QWidget *parent = 0);
+    explicit coreinfo(QWidget *parent = nullptr);
     ~coreinfo();
-    QDir getCommonDir(Core *C);
-    void refreshDisplay();
+
     void openFiles(QStringList fileNames);
-    void updateProgressBar();
+    void refreshDisplay();
+    QDir getCommonDir(Core *C);
 
 private:
-    QTimer* timer;
-    QProgressDialog* progressDialog;
+    Ui::coreinfo *ui;
     Core* C;
-    QWidget* viewWidget;
     QTreeWidget *showTreeView(bool completeDisplay);
     QString shortName(QDir d, QString name);
-    void openTimerInit();
 };
 
 #endif // COREINFO_H
