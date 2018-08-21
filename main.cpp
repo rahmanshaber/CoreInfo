@@ -15,13 +15,22 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, see {http://www.gnu.org/licenses/}. */
 
 #include "coreinfo.h"
+
 #include <QApplication>
+
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
+    app.setAttribute(Qt::AA_EnableHighDpiScaling);
+    app.setQuitOnLastWindowClosed(true);
+
+    // Set application info
+    app.setOrganizationName("CoreBox");
+    app.setApplicationName("CoreInfo");
+
     coreinfo w;
     w.show();
 
-    return a.exec();
+    return app.exec();
 }
