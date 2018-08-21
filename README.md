@@ -1,7 +1,7 @@
 # CoreInfo
 An app of CoreApps family. It give's a file's detail information .It supports Audio,Video,Image etc.It uses libmediainfo as backend.
 
-<img src="a1.png" width="500">
+<img src="CoreInfo.png" width="500">
 
 ### Changes in latest release
 * First release.
