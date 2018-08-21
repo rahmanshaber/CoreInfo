@@ -7,6 +7,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += _UNICODE
 
 CONFIG += c++11
+CONFIG += silent warn_on shared_and_static
 
 unix:LIBS += -ldl -lz
 
