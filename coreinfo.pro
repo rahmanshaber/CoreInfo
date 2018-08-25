@@ -3,12 +3,6 @@ QT       += core gui widgets
 TARGET = coreinfo
 TEMPLATE = app
 
-DEFINES += QT_DEPRECATED_WARNINGS
-DEFINES += _UNICODE
-
-CONFIG += c++11
-CONFIG += silent warn_on shared_and_static
-
 unix:LIBS += -ldl -lz
 
 FORMS += \
@@ -37,8 +31,43 @@ unix:!macx {
      PKGCONFIG += libzen
 }
 
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+# Disable warnings, enable threading support and c++11
+CONFIG += thread silent build_all c++11
 
+# Disable Debug on Release
+# CONFIG(release):DEFINES += QT_NO_DEBUG_OUTPUT
+
+# Build location
+
+BUILD_PREFIX = $$(CA_BUILD_DIR)
+
+isEmpty( BUILD_PREFIX ) {
+        BUILD_PREFIX = ./build
+}
+
+MOC_DIR       = $$BUILD_PREFIX/moc-qt5
+OBJECTS_DIR   = $$BUILD_PREFIX/obj-qt5
+RCC_DIR	      = $$BUILD_PREFIX/qrc-qt5
+UI_DIR        = $$BUILD_PREFIX/uic-qt5
+
+
+unix {
+        isEmpty(PREFIX) {
+                PREFIX = /usr
+        }
+        BINDIR = $$PREFIX/bin
+
+        target.path = $$BINDIR
+
+        desktop.path = $$PREFIX/share/applications/
+        desktop.files = "CoreInfo.desktop"
+
+        icons.path = $$PREFIX/share/icons/CoreApps/
+        icons.files = icons/CoreInfo.svg
+
+        INSTALLS += target icons desktop
+}
+
+DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += "HAVE_POSIX_OPENPT"
+DEFINES += _UNICODE

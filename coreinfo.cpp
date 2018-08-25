@@ -24,7 +24,7 @@ coreinfo::coreinfo(QWidget *parent) :QWidget(parent),ui(new Ui::coreinfo)
     C = new Core();
 
     // For testing
-    openFiles(QStringList() <<"File Path" );
+//    openFiles(QStringList() <<"File Path" );
 }
 
 coreinfo::~coreinfo()

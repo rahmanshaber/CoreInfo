@@ -17,6 +17,7 @@ along with this program; if not, see {http://www.gnu.org/licenses/}. */
 #include "coreinfo.h"
 
 #include <QApplication>
+#include <QCommandLineParser>
 
 
 int main(int argc, char *argv[])
@@ -29,7 +30,26 @@ int main(int argc, char *argv[])
     app.setOrganizationName("CoreBox");
     app.setApplicationName("CoreInfo");
 
+    QCommandLineParser parser;
+    parser.addHelpOption();
+    parser.addVersionOption();
+
+    const QString files = "[FILE1, FILE2,...]";
+    parser.addPositionalArgument("files", files, files);
+
+    parser.process(app);
+
+    QStringList args = parser.positionalArguments();
+
+    QStringList paths;
+    foreach (QString arg, args) {
+      QFileInfo info(arg);
+      paths.push_back(info.absoluteFilePath());
+    }
     coreinfo w;
+//    if (paths.count()) {
+//        e.openFiles(paths);
+//    }
     w.show();
 
     return app.exec();
