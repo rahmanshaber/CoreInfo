@@ -47,9 +47,9 @@ int main(int argc, char *argv[])
       paths.push_back(info.absoluteFilePath());
     }
     coreinfo w;
-//    if (paths.count()) {
-//        e.openFiles(paths);
-//    }
+    if (paths.count()) {
+        w.openFiles(paths);
+    }
     w.show();
 
     return app.exec();

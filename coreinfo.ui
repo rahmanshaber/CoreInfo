@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>CoreInfo</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="icons.qrc">
+    <normaloff>:/icons/CoreInfo.svg</normaloff>:/icons/CoreInfo.svg</iconset>
+  </property>
   <layout class="QVBoxLayout" name="mainLayout">
    <property name="spacing">
     <number>0</number>
@@ -37,6 +41,8 @@
    </property>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
