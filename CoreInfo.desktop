@@ -2,7 +2,7 @@
 Name=CoreInfo
 Comment=It give's a file's detail information, app from CoreApps.
 Exec=coreinfo %F
-Icon=/usr/share/icons/CoreApps/CoreInfo.svg
+Icon=/usr/share/coreapps/icons/CoreInfo.svg
 Type=Application
 Categories=Qt;Utility;
 Terminal=false
