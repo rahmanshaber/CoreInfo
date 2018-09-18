@@ -39,6 +39,7 @@ void coreinfo::openFiles(QStringList fileNames)
         return;
     for (int i = 0; i < fileNames.size(); i++) {
         fileNames[i] = QDir::toNativeSeparators(fileNames[i]);
+        this->setWindowTitle(fileNames[1] + " - CoreInfo");
     }
 
     // For opening multiple files
