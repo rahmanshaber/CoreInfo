@@ -19,6 +19,9 @@ SOURCES += \
     Core.cpp \
     coreinfo.cpp
 
+# library for theme
+unix:!macx: LIBS += -lcprime
+
 !defined(packagesExist, test) {
     defineTest(packagesExist) {
         system(pkg-config $$ARGS): return(true)

@@ -21,6 +21,10 @@ along with this program; if not, see {http://www.gnu.org/licenses/}. */
 coreinfo::coreinfo(QWidget *parent) :QWidget(parent),ui(new Ui::coreinfo)
 {
     ui->setupUi(this);
+
+    // set stylesheet from style.qrc
+    setStyleSheet(Utilities::getStylesheetFileContent(Utilities::StyleAppName::DialogStyle));
+
     C = new Core();
 
     // For testing
