@@ -28,7 +28,7 @@ coreinfo::coreinfo(QWidget *parent) :QWidget(parent),ui(new Ui::coreinfo)
     C = new Core();
 
     // For testing
-//    openFiles(QStringList() <<"File Path" );
+    //openFiles(QStringList() << "File Path" );
 }
 
 coreinfo::~coreinfo()
@@ -39,12 +39,15 @@ coreinfo::~coreinfo()
 void coreinfo::openFiles(QStringList fileNames)
 {
     //Configuring
-    if (fileNames.isEmpty())
+    if (fileNames.count() == 0) {
+        qDebug() << "No file found.\nPlease enter some valid file path.";
         return;
-    for (int i = 0; i < fileNames.size(); i++) {
-        fileNames[i] = QDir::toNativeSeparators(fileNames[i]);
-        this->setWindowTitle(fileNames[1] + " - CoreInfo");
     }
+    for (int i = 0; i < fileNames.count(); i++) {
+        fileNames[i] = QDir::toNativeSeparators(fileNames[i]);
+    }
+
+    this->setWindowTitle(QFileInfo(fileNames[0]).fileName() + " - CoreInfo");
 
     // For opening multiple files
 //    C->Menu_File_Open_Files_Begin(true, false);
