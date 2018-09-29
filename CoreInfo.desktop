@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=CoreInfo
-Comment=It give's a file's detail information, app from CoreApps.
-Exec=coreinfo %F
-Icon=/usr/share/coreapps/icons/CoreInfo.svg
-Type=Application
-Categories=Utility;Qt;
-Terminal=false
-StartupNotify=true
