@@ -28,7 +28,7 @@ along with this program; if not, see {http://www.gnu.org/licenses/}. */
 
 #include <ZenLib/Ztring.h>
 #include <ZenLib/ZtringListList.h>
-#include <cprime/utilities.h>
+#include <cprime/themefunc.h>
 
 using namespace ZenLib;
 

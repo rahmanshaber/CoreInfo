@@ -23,7 +23,7 @@ coreinfo::coreinfo(QWidget *parent) :QWidget(parent),ui(new Ui::coreinfo)
     ui->setupUi(this);
 
     // set stylesheet from style.qrc
-    setStyleSheet(Utilities::getStylesheetFileContent(Utilities::StyleAppName::DialogStyle));
+    setStyleSheet(CPrime::ThemeFunc::getStyleSheetFileContent(CPrime::StyleTypeName::DialogStyle));
 
     C = new Core();
 
