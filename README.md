@@ -3,12 +3,15 @@ An app of CoreApps family. It give's a file's detail information .It supports Au
 
 <img src="coreinfo.png" width="500">
 
+### Download
+
 ### Changes in latest release
 * First release.
-* Version 1.1
 
+### Build
 
 ### Dependencies:
+* libcprime
 * qt5
 * libzen
 * libmediainfo
@@ -19,11 +22,15 @@ An app of CoreApps family. It give's a file's detail information .It supports Au
 * Manjaro xfce (Arch).
 * Qt toolkit 5.11.1 .
 
-### ToDo
-
 ### Known Bugs
 
+### Help Us
+* We need to add package for this app.DEB is in top priority.so if any one could guide us how to do that it will be helpful.
+* Also add the app in AUR.
+* Some of the apps has old code,so they have some issue in them.Please review the code and help us fix them.
+* See the "HelpUs" page in Help app for more problems.
+
 ### Feedback
-* We need your feedback to improve the CoreInfo.Send us your feedback through email or github [issues](https://github.com/rahmanshaber/coreinfo/issues "Title") .
+* We need your feedback to improve the CoreApps.Send us your feedback through email or github [issues](https://github.com/rahmanshaber/corebox/issues "Title") .
 * rahmanshaber@gmail.com
 * s96mini.cube@yahoo.com
